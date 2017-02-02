@@ -1,0 +1,11 @@
+# maven
+target/
+
+### intellij
+.idea
+*.iml
+
+###
+*.log
+.DS_Store
+*.swp
