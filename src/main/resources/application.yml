@@ -1,0 +1,14 @@
+spring:
+  # jooq
+  jooq:
+    sql-dialect: POSTGRES
+  # data source
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    url: jdbc:postgresql://localhost:25432/jooqdemodb
+    # for HikarCP
+    hikari:
+      driver-class-name: org.postgresql.Driver
+      username: jooqdemouser
+      password: jooqdemouser
+      auto-commit: false

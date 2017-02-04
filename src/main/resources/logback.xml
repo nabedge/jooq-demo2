@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--<!DOCTYPE logback>-->
+<configuration>
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <target>System.out</target>
+        <encoder>
+            <pattern>%blue(%d{HH:mm:ss.SSS}) %highlight(%level) %cyan(%logger{16}) %thread %message %xException%n%nopex</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+
+    <!-- java.util.loggingをslf4j経由で出力するときの性能劣化を防ぐおまじない -->
+    <contextListener class="ch.qos.logback.classic.jul.LevelChangePropagator">
+        <resetJUL>true</resetJUL>
+    </contextListener>
+
+    <!-- application -->
+    <logger name="com.example" level="DEBUG" />
+
+    <!-- jooq -->
+    <logger name="org.jooq" level="debug" />
+    <!-- jooq logo -->
+    <logger name="org.jooq.Constants" level="off" />
+
+    <root>
+        <level value="INFO" />
+        <appender-ref ref="CONSOLE" />
+    </root>
+
+</configuration>
