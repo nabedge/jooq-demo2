@@ -157,6 +157,8 @@
                                     <deprecated>false</deprecated>
                                     <instanceFields>true</instanceFields>
                                     <pojos>true</pojos>
+                                    <!--<immutablePojos>true</immutablePojos>-->
+                                    <interfaces>true</interfaces>
                                 </generate>
                                 <target>
                                     <packageName>com.example.db</packageName>

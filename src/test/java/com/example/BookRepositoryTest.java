@@ -40,7 +40,7 @@ public class BookRepositoryTest {
     @Test
     public void selectByAuthorId() throws Exception {
 
-        Integer authorId = 2;
+        Long authorId = 2L;
         List<Book> books = bookRepository.selectByAuthorId(authorId);
 
         log.debug(books.toString());
@@ -49,7 +49,8 @@ public class BookRepositoryTest {
 
     @Test
     public void selectRecordsByAuthorId() throws Exception {
-        Integer authorId = 2;
+
+        Long authorId = 2L;
         Result<Record3<String, String, String>> result = bookRepository.selectRecordsByAuthorId(authorId);
 
         result.forEach(record -> {
@@ -61,7 +62,7 @@ public class BookRepositoryTest {
     @Test
     public void selectTitleAndAuthorByAuthorId() throws Exception {
 
-        Integer authorId = 2;
+        Long authorId = 2L;
 
         List<TitleAndAuthorName> list = bookRepository.selectTitleAndAuthorByAuthorId(authorId);
 
@@ -74,6 +75,11 @@ public class BookRepositoryTest {
     @Test
     public void insertBook() throws Exception {
         bookRepository.insertBook();
+    }
+
+    @Test
+    public void updateBook() throws Exception {
+        bookRepository.updateBook();
     }
 
     @Test
