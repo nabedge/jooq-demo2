@@ -83,6 +83,17 @@ public class BookRepositoryTest {
     }
 
     @Test
+    public void updateByUpdatableRecord() throws Exception {
+        bookRepository.updateByUpdatableRecord();
+    }
+
+    @Test
+    public void gettingSQL() throws Exception {
+        String title = bookRepository.gettingSQL();
+        assertThat(title).isEqualTo("1Q84, Volumes 1-2");
+    }
+
+    @Test
     public void test_insertDuplicateKey() throws Exception {
 
         // AUTHORテーブルの件数 あとで確認するため

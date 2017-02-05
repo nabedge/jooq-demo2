@@ -5,6 +5,7 @@ import com.example.db.tables.pojos.Book;
 import com.example.db.tables.records.BookRecord;
 import lombok.extern.slf4j.Slf4j;
 import org.jooq.DSLContext;
+import org.jooq.Record;
 import org.jooq.Record3;
 import org.jooq.Result;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,13 +30,6 @@ public class BookRepository {
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
-
-    public int countAuthor() {
-        return dslContext
-                .selectCount()
-                .from(AUTHOR)
-                .execute();
-    }
 
     public Book findByIsbn(String isbn) {
         return dslContext
@@ -117,8 +111,37 @@ public class BookRepository {
         bookRecord.setIsbn("001-0000000002");
         bookRecord.setTitle("The Sign of Four");
         bookRecord.update();
+
+        // ここからDELETEもできる
+        // bookRecord.delete();
     }
 
+    public String gettingSQL() {
+
+        String isbn = "001-9999990002";
+
+        // jooqでSQLを組み立てて、それを他のO/Rマッパーに流し込んで結果を取得する
+        String sql = dslContext
+                .select(BOOK.TITLE)
+                .from(BOOK)
+                .where(BOOK.ISBN.eq(isbn))
+                .getSQL();
+
+        return jdbcTemplate.queryForObject(sql, String.class, isbn);
+    }
+
+    @Transactional
+    public void updateByUpdatableRecord() {
+
+        // SELECTした結果を UpdatableRecord で受け取ってそれを使って UPDATEする
+
+        String isbn = "001-9999990001";
+
+        BookRecord rec = dslContext.fetchOne(BOOK, BOOK.ISBN.eq(isbn));
+        rec.set(BOOK.TITLE, "Norwegian Wood"); // 元データにはスペルミスがある
+
+        rec.store(); // これでUPDATEされる
+    }
 
     @Transactional
     public void duplicateInsert_ThisIsBug() {
@@ -136,4 +159,10 @@ public class BookRepository {
                 .execute();
     }
 
+    public int countAuthor() {
+        return dslContext
+                .selectCount()
+                .from(AUTHOR)
+                .execute();
+    }
 }
