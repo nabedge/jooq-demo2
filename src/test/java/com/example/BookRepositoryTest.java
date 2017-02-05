@@ -2,23 +2,25 @@ package com.example;
 
 import com.example.db.tables.pojos.Book;
 import lombok.extern.slf4j.Slf4j;
-import org.jooq.Record;
 import org.jooq.Record3;
 import org.jooq.Result;
-import org.jooq.SelectSeekStep1;
+import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.List;
 
-import static com.example.db.tables.Book.BOOK;
+import static com.example.db.tables.Author.AUTHOR;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = {Application.class})
+//@Transactional // わざとつけないでおく。データが汚れたら "mvn compile" でデータ層を全部作り直し。
 @Slf4j
 public class BookRepositoryTest {
 
@@ -52,9 +54,51 @@ public class BookRepositoryTest {
 
         result.forEach(record -> {
             log.debug("### {}", record.toString());
-            log.debug(record.get(BOOK.ISBN));
+            assertThat(record.get(AUTHOR.NAME)).isEqualTo("Haruki Murakami");
         });
-//        log.debug(records.toString());
     }
 
+    @Test
+    public void selectTitleAndAuthorByAuthorId() throws Exception {
+
+        Integer authorId = 2;
+
+        List<TitleAndAuthorName> list = bookRepository.selectTitleAndAuthorByAuthorId(authorId);
+
+        list.forEach(titleAndAuthor -> {
+            log.debug("### {}", titleAndAuthor.toString());
+            assertThat(titleAndAuthor.getAuthorName()).isEqualTo("Haruki Murakami");
+        });
+    }
+
+    @Test
+    public void insertBook() throws Exception {
+        bookRepository.insertBook();
+    }
+
+    @Test
+    public void test_insertDuplicateKey() throws Exception {
+
+        // AUTHORテーブルの件数 あとで確認するため
+        int count = bookRepository.countAuthor();
+
+        try {
+
+            // AUTHORテーブルに2回INSERTを投げるが、2回目のINSERTは重複例外が発生する
+
+            log.debug("@@@@ ここから下にlog4jdbcがrollback発生のログを出すはず");
+            bookRepository.duplicateInsert_ThisIsBug();
+            Assert.fail();
+
+        } catch (DuplicateKeyException e) {
+            log.debug("@@@@ ここまで");
+
+            assertThat(e.getMessage()).contains("duplicate key value violates");
+
+        } finally {
+
+            // 例外発生するとロールバックされるので、テーブルには何も追加されていないはず
+            assertThat(bookRepository.countAuthor()).isEqualTo(count);
+        }
+    }
 }

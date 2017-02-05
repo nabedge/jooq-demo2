@@ -1,14 +1,19 @@
 spring:
-  # jooq
+
+  ### jooq
   jooq:
     sql-dialect: POSTGRES
-  # data source
+
+  ### data source
   datasource:
+    #url: jdbc:postgresql://localhost:25432/jooqdemodb
+    url: jdbc:log4jdbc:postgresql://localhost:25432/jooqdemodb
+    #drivefClassName: org.postgresql.Driver
+    driverClassName: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
+    username: jooqdemouser
+    password: jooqdemouser
     type: com.zaxxer.hikari.HikariDataSource
-    url: jdbc:postgresql://localhost:25432/jooqdemodb
+
     # for HikarCP
     hikari:
-      driver-class-name: org.postgresql.Driver
-      username: jooqdemouser
-      password: jooqdemouser
       auto-commit: false
