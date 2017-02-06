@@ -5,7 +5,7 @@ jOOQ - Java O/R mapper - and Spring Framework (Spring Boot) sample project
 # How to use ?
 
 ## CLI
-You need Docker for Mac/Windows, JDK($JAVA_HOME) and maven
+You need Docker for Mac/Windows, JDK 8 ($JAVA_HOME) and maven
 
 1. git clone "this repository"
 2. sh docker-start.sh
