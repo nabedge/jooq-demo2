@@ -21,11 +21,17 @@ import static com.example.db.tables.Book.BOOK;
 @Slf4j
 public class BookRepository {
 
+    /**
+     * jOOQ main context
+     */
     @Autowired
     private DSLContext dslContext;
     // See JooqAutoConfiguration class of spring-boot !
     // jooq manual: https://www.jooq.org/doc/3.9/manual/getting-started/tutorials/jooq-with-spring/
 
+    /**
+     * JdbcTemplate as a "OTHER" O/R mapper.
+     */
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
