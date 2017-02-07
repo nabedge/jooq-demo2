@@ -1,11 +1,9 @@
 package com.example;
 
-import com.example.db.tables.Author;
 import com.example.db.tables.pojos.Book;
 import com.example.db.tables.records.BookRecord;
 import lombok.extern.slf4j.Slf4j;
 import org.jooq.DSLContext;
-import org.jooq.Record;
 import org.jooq.Record3;
 import org.jooq.Result;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,8 +11,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.util.List;
 
@@ -27,6 +23,8 @@ public class BookRepository {
 
     @Autowired
     private DSLContext dslContext;
+    // See JooqAutoConfiguration class of spring-boot !
+    // jooq manual: https://www.jooq.org/doc/3.9/manual/getting-started/tutorials/jooq-with-spring/
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
